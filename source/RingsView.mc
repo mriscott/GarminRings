@@ -6,15 +6,31 @@
 
 using Toybox.WatchUi as Ui;
 using Toybox.Graphics;
+using Toybox.System;
+using Toybox.Time;
 
 class RingsView extends Ui.View {
     var stepgoal=0;
     var actgoal=0;
     var distgoal=500000;
+    var water=0;
+    var watergoal=2000;
 
     function initialize() {
         Ui.View.initialize();
+	System.println("Init");
+	water=Application.getApp().getProperty("water");
+	var day=Application.getApp().getProperty("day");
+	System.println("water:"+water);
+	System.println("Day:"+day);
+	var today = Time.today().value();
+	System.println("Today:"+today);
+	if(day!=today){	  
+	  water=0;
+	  Application.getApp().setProperty("day",today);
+	}
     }
+
 
     // Load your resources here
     function onLayout(dc) {
@@ -47,10 +63,11 @@ class RingsView extends Ui.View {
     // Update the view
     function onUpdate(dc) {
 	var info = ActivityMonitor.getInfo();
-        var distMsg = "Dist:"+(info.distance/100);
+        //var distMsg = "Dist:"+(info.distance/100);
 	var stepMsg =  "Step : "+info.steps;
 	var actMsg = "Act:"+info.activeMinutesDay.total;
 	//var calMsg =  "Cals : "+info.calories;
+	var waterMsg="Water:"+water;
 
 	dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
 	dc.clear();
@@ -65,15 +82,16 @@ class RingsView extends Ui.View {
 
 	 var steps=360*info.steps/stepgoal;
 	 var act=360*info.activeMinutesDay.total/actgoal;
-	 var dist=360*info.distance/distgoal;
+	 //var dist=360*info.distance/distgoal;
+	 var drunk=360*water/watergoal;
 	 
         dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_BLACK);
-	drawMsg(dc,-1,distMsg);
-	drawRing(dc,60,dist);
+	drawMsg(dc,-1,actMsg);
+	drawRing(dc,60,act);
 
 	dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_BLACK);
-	drawMsg(dc,0,actMsg);
-	drawRing(dc,70,act);
+	drawMsg(dc,0,waterMsg);
+	drawRing(dc,70,drunk);
 
         dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_BLACK);
 	drawMsg(dc,1,stepMsg);
@@ -86,8 +104,15 @@ class RingsView extends Ui.View {
     // state of your app here.
     function onHide() {
     }
+    
     function onReceive(x){
-       Ui.requestUpdate();
+       addWater();
     }
+
+   function addWater(){
+     water=water+250;
+     Application.getApp().setProperty("water",water);
+     Ui.requestUpdate();
+   }
 
 }
