@@ -27,6 +27,7 @@ class RingsView extends Ui.View {
 	System.println("Today:"+today);
 	if(day!=today){	  
 	  water=0;
+          Application.getApp().setProperty("water",water);
 	  Application.getApp().setProperty("day",today);
 	}
     }
@@ -65,7 +66,7 @@ class RingsView extends Ui.View {
 	var info = ActivityMonitor.getInfo();
         //var distMsg = "Dist:"+(info.distance/100);
 	var stepMsg =  "Step : "+info.steps;
-	var actMsg = "Act:"+info.activeMinutesDay.total;
+	var actMsg = "Act:"+info.activeMinutesDay.vigorous;
 	//var calMsg =  "Cals : "+info.calories;
 	var waterMsg="Water:"+water;
 
@@ -81,11 +82,11 @@ class RingsView extends Ui.View {
 	 }
 
 	 var steps=360*info.steps/stepgoal;
-	 var act=360*info.activeMinutesDay.total/actgoal;
+	 var act=360*info.activeMinutesDay.vigorous/actgoal;
 	 //var dist=360*info.distance/distgoal;
 	 var drunk=360*water/watergoal;
 	 
-        dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_BLACK);
+        dc.setColor(Graphics.COLOR_YELLOW, Graphics.COLOR_BLACK);
 	drawMsg(dc,-1,actMsg);
 	drawRing(dc,60,act);
 
@@ -110,7 +111,10 @@ class RingsView extends Ui.View {
     }
 
    function addWater(){
-     water=water+250;
+     water=water+125;
+     if(water==10000) {
+        water=0;
+     }
      Application.getApp().setProperty("water",water);
      Ui.requestUpdate();
    }
