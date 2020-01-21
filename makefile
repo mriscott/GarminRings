@@ -1,13 +1,12 @@
-sdkroot=c:\users\u8006988\garminSDK
-projectroot=c:\users\u8006988\projects\GarminRings
+watch=fr735xt
+sdkroot=/opt/ciq
 
+Rings.prg : source/*.mc
+	monkeyc  -y ../developer_key.der -o ./Rings.prg -f ./monkey.jungle 
 
-build :
-	$(sdkroot)\bin\monkeyc  -y $(sdkroot)\keys\developer_key.der -o $(projectroot)\Rings.prg -f $(projectroot)\monkey.jungle 
-
-run: build
-	$(sdkroot)\bin\connectiq
-	$(sdkroot)\bin\monkeydo $(projectroot)\Rings.prg fr735xt
-
-rerun:	
-	$(sdkroot)\bin\monkeydo $(projectroot)\Rings.prg fr735xt
+run: Rings.prg
+	connectiq &
+	monkeydo ./Rings.prg ${watch}
+	
+package: 
+	monkeyc -e -a ${sdkroot}/bin/api.db -i ${sdkroot}/bin/api.debug.xml -o ./Rings.iq -y ../developer_key.der -w -u ${sdkroot}/bin/devices.xml -p ${sdkroot}/bin/projectInfo.xml -f ./monkey.jungle
