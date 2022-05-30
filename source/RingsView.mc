@@ -11,6 +11,7 @@ using Toybox.Time;
 
 class RingsView extends Ui.View {
     var stepgoal=0;
+    var floorgoal=0;
     var actgoal=0;
     var distgoal=500000;
     var water=0;
@@ -53,7 +54,7 @@ class RingsView extends Ui.View {
 
     function drawMsg(dc, offset, message) {
 	offset*=23;
-	dc.drawText(dc.getWidth()/2, dc.getHeight()/2 +offset, Graphics.FONT_MEDIUM, message, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+	dc.drawText(dc.getWidth()/2, dc.getHeight()/2 +offset, Graphics.FONT_TINY, message, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
     }
 
 
@@ -67,12 +68,15 @@ class RingsView extends Ui.View {
         //var distMsg = "Dist:"+(info.distance/100);
 	var stepMsg =  "Step : "+info.steps;
 	var actMsg = "Act:"+info.activeMinutesDay.vigorous;
-	//var calMsg =  "Cals : "+info.calories;
+	var floorMsg =  "Floor : "+info.floorsClimbed;
 	var waterMsg="Water:"+water;
 
 	dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
 	dc.clear();
 
+	 if (floorgoal==0) {
+	   floorgoal=info.floorsClimbedGoal;
+	 }
 	 if (stepgoal==0) {
 	   stepgoal=info.stepGoal;
 	 }
@@ -84,19 +88,24 @@ class RingsView extends Ui.View {
 	 var steps=360*info.steps/stepgoal;
 	 var act=360*info.activeMinutesDay.vigorous/actgoal;
 	 //var dist=360*info.distance/distgoal;
+	 var floors=360*info.floorsClimbed/floorgoal;
 	 var drunk=360*water/watergoal;
 	 
         dc.setColor(Graphics.COLOR_YELLOW, Graphics.COLOR_BLACK);
-	drawMsg(dc,-1,actMsg);
-	drawRing(dc,60,act);
+	drawMsg(dc,-1.5,actMsg);
+	drawRing(dc,80,act);
 
-	dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_BLACK);
-	drawMsg(dc,0,waterMsg);
-	drawRing(dc,70,drunk);
+	dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_BLACK);
+	drawMsg(dc,-0.5,floorMsg);
+	drawRing(dc,90,floors);
 
         dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_BLACK);
-	drawMsg(dc,1,stepMsg);
-	drawRing(dc,80,steps);
+	drawMsg(dc,0.5,stepMsg);
+	drawRing(dc,100,steps);
+
+        dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_BLACK);
+	drawMsg(dc,1.5,waterMsg);
+	drawRing(dc,70,drunk);
 
 	
     }

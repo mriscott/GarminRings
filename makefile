@@ -1,5 +1,5 @@
 watch=fr735xt
-sdkroot=/opt/ciq
+sdkroot=/export/home/u8006988/projects/garmin/sdk/
 
 Rings.prg : source/*.mc
 	monkeyc  -y ../developer_key.der -o ./Rings.prg -f ./monkey.jungle 
