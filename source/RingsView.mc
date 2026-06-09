@@ -13,24 +13,18 @@ class RingsView extends Ui.View {
     var stepgoal=0;
     var floorgoal=0;
     var actgoal=0;
-    var distgoal=500000;
-    var water=0;
-    var watergoal=2000;
+    var weekday=0;
 
     function initialize() {
         Ui.View.initialize();
 	System.println("Init");
-	water=Application.getApp().getProperty("water");
 	var day=Application.getApp().getProperty("day");
-	System.println("water:"+water);
 	System.println("Day:"+day);
 	var today = Time.today().value();
-	System.println("Today:"+today);
 	if(day!=today){	  
-	  water=0;
-          Application.getApp().setProperty("water",water);
 	  Application.getApp().setProperty("day",today);
 	}
+
     }
 
 
@@ -64,48 +58,34 @@ class RingsView extends Ui.View {
 
     // Update the view
     function onUpdate(dc) {
+	var weekday=(Time.Gregorian.info(Time.today(),Time.FORMAT_SHORT).day_of_week-1);
+	if(weekday==0){
+	    weekday=7;
+	}
+	System.println("Today:"+weekday);
 	var info = ActivityMonitor.getInfo();
-        //var distMsg = "Dist:"+(info.distance/100);
-	var stepMsg =  "Step : "+info.steps;
-	var actMsg = "Act:"+info.activeMinutesDay.vigorous;
-	var floorMsg =  "Floor : "+info.floorsClimbed;
-	var waterMsg="Water:"+water;
+	var actMsgD = "Day:"+info.activeMinutesDay.total;
+	var actMsgW = "WTD:"+info.activeMinutesWeek.total;
 
 	dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
 	dc.clear();
 
-	 if (floorgoal==0) {
-	   floorgoal=info.floorsClimbedGoal;
-	 }
-	 if (stepgoal==0) {
-	   stepgoal=info.stepGoal;
-	 }
-
 	 if (actgoal==0) {
 	   actgoal=info.activeMinutesWeekGoal/7;
 	 }
-
-	 var steps=360*info.steps/stepgoal;
-	 var act=360*info.activeMinutesDay.vigorous/actgoal;
-	 //var dist=360*info.distance/distgoal;
-	 var floors=360*info.floorsClimbed/floorgoal;
-	 var drunk=360*water/watergoal;
+	 
+	 var actd=360*info.activeMinutesDay.total/actgoal;
+	 var actw=(360*info.activeMinutesWeek.total)/(actgoal*weekday);
+	 
 	 
         dc.setColor(Graphics.COLOR_YELLOW, Graphics.COLOR_BLACK);
-	drawMsg(dc,-1.5,actMsg);
-	drawRing(dc,80,act);
+	drawMsg(dc,-0.8,actMsgD);
+	drawRing(dc,75,actd);
 
 	dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_BLACK);
-	drawMsg(dc,-0.5,floorMsg);
-	drawRing(dc,90,floors);
+	drawMsg(dc,0.8,actMsgW);
+	drawRing(dc,90,actw);
 
-        dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_BLACK);
-	drawMsg(dc,0.5,stepMsg);
-	drawRing(dc,100,steps);
-
-        dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_BLACK);
-	drawMsg(dc,1.5,waterMsg);
-	drawRing(dc,70,drunk);
 
 	
     }
@@ -116,16 +96,8 @@ class RingsView extends Ui.View {
     }
     
     function onReceive(x){
-       addWater();
     }
 
-   function addWater(){
-     water=water+125;
-     if(water==10000) {
-        water=0;
-     }
-     Application.getApp().setProperty("water",water);
-     Ui.requestUpdate();
-   }
+
 
 }

@@ -8,6 +8,7 @@ using Toybox.Application as App;
 
 class RingsApp extends App.AppBase {
     hidden var mView;
+    hidden var mGlanceView;
     hidden var mDelegate;
 
     function initialize() {
@@ -25,8 +26,14 @@ class RingsApp extends App.AppBase {
     // Return the initial view of your application here
     function getInitialView() {
         mView = new RingsView();
-        mDelegate = new RingsDelegate(mView.method(:onReceive));
-        return [mView, mDelegate];
+        //mDelegate = new RingsDelegate(mView.method(:onReceive));
+        return [mView];
     }
+
+    function getGlanceView() {
+        mGlanceView = new RingsGlanceView();
+        return [mGlanceView];
+    }
+    
 
 }

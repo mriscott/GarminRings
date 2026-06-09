@@ -1,15 +1,18 @@
-watch=fenix5s
+watch=fenix6
 
-sdkroot=/home/yane/.Garmin/ConnectIQ/Sdks/connectiq-sdk-lin-4.1.2-2022-04-07-15e8df3ed/
+sdkroot=/home/yane/.Garmin/ConnectIQ/Sdks/connectiq-sdk-lin-8.4.1-2026-02-03-e9f77eeaa/
+
 Rings.prg : source/*.mc
-	monkeyc  -y ../developer_key.der -o ./Rings.prg -f ./monkey.jungle 
+	${sdkroot}/bin/monkeyc  -y developer_key.der -o ./Rings.prg -f ./monkey.jungle 
+
+sim:
+	/home/yane/.Garmin/ConnectIQ/AppImages/Connect_IQ_Simulator-8.4.1+159-x86_64.AppImage &
 
 run: Rings.prg
-	connectiq &
-	monkeydo ./Rings.prg ${watch}
+	${sdkroot}/bin/monkeydo ./Rings.prg ${watch}
 	
 package: Rings.prg
-	monkeyc -e -a ${sdkroot}/bin/api.db -i ${sdkroot}/bin/api.debug.xml -o ./Rings.iq -y ../developer_key.der -w -u ${sdkroot}/bin/devices.xml -p ${sdkroot}/bin/projectInfo.xml -f ./monkey.jungle
+	${sdkroot}/bin/monkeyc -e -a ${sdkroot}/bin/api.db -i ${sdkroot}/bin/api.debug.xml -o ./Rings.iq -y developer_key.der -w -u ${sdkroot}/bin/devices.xml -p ${sdkroot}/bin/projectInfo.xml -f ./monkey.jungle
 
 clean:
 	rm Rings.prg Rings.iq
