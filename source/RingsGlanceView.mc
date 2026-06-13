@@ -34,13 +34,20 @@ class RingsGlanceView extends Ui.GlanceView {
 
 	var actw=(info.activeMinutesWeek.total)/(actgoal*weekday);
 	 
-	 
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
         dc.clear();
         dc.drawText(5, dc.getHeight()/4, Graphics.FONT_SMALL, "Intensity", Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
 	dc.drawLine(0,dc.getHeight()/2,dc.getWidth(),dc.getHeight()/2);
+	dc.drawText(5, dc.getHeight()/4*3, Graphics.FONT_SMALL, ""+info.activeMinutesWeek.total+"/"+(actgoal*weekday), Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
 	dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_WHITE);
+	var scale=dc.getWidth()*info.activeMinutesWeek.total/(actgoal*weekday);
+        if (scale > dc.getWidth()) {
+	   scale =dc.getWidth();
+        }
+    System.println("Scale:"+scale);
+//    dc.fillRectangle(0,dc.getHeight()/2-3,(dc.getWidth()*scale),6);
 	dc.fillRectangle(0,dc.getHeight()/2-3,((dc.getWidth()*info.activeMinutesWeek.total)/(actgoal*weekday)),6);
+			 
        }
 
     // Called when this View is removed from the screen. Save the
