@@ -78,7 +78,10 @@ class RingsView extends Ui.View {
 	 }
 	 
 	 var actd=360*info.activeMinutesDay.total/actgoal;
-	 var actw=(360*info.activeMinutesWeek.total)/(actgoal*weekday);
+	 var actw=360*(info.activeMinutesWeek.total-((actgoal*weekday-1)))/(actgoal*weekday);
+	 if(actw<0){
+	     actw=0;
+	 }
 	var steps=360*info.steps/info.stepGoal;
 	var floors=360*info.floorsClimbed/info.floorsClimbedGoal;	 
 
