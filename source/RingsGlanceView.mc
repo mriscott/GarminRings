@@ -33,14 +33,19 @@ class RingsGlanceView extends Ui.GlanceView {
 	var actgoal=info.activeMinutesWeekGoal/7;
 
 	var actw=(info.activeMinutesWeek.total)/(actgoal*weekday);
+	var weektarget=(actgoal*weekday);
+	if(weekday==7){
+	    weektarget=info.activeMinutesWeek;
+        }
+	
 	 
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
         dc.clear();
         dc.drawText(5, dc.getHeight()/4, Graphics.FONT_SMALL, "Int mins", Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
-	dc.drawLine(0,dc.getHeight()/2,dc.getWidth()*0.9,dc.getHeight()/2);
-	dc.drawText(5, dc.getHeight()/4*3, Graphics.FONT_SMALL, ""+info.activeMinutesWeek.total+"/"+(actgoal*weekday), Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
+	dc.drawLine(0,dc.getHeight()/2,dc.getWidth(),dc.getHeight()/2);
+	dc.drawText(5, dc.getHeight()/4*3, Graphics.FONT_SMALL, ""+info.activeMinutesWeek.total+"/"+weektarget, Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
 	dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_WHITE);
-	dc.fillRectangle(0,dc.getHeight()/2-3,((dc.getWidth()*0.9*info.activeMinutesWeek.total)/(actgoal*weekday)),6);
+	dc.fillRectangle(0,dc.getHeight()/2-3,((dc.getWidth()*info.activeMinutesWeek.total)/weektarget),6);
 			 
        }
 
