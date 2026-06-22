@@ -64,8 +64,11 @@ class RingsView extends Ui.View {
 	}
 	System.println("Today:"+weekday);
 	var info = ActivityMonitor.getInfo();
-	var actMsgD = "Day:"+info.activeMinutesDay.total;
-	var actMsgW = "WTD:"+info.activeMinutesWeek.total;
+	var actMsgD = "  Int:"+info.activeMinutesDay.total;
+	var actMsgW = "  WTD:"+info.activeMinutesWeek.total;
+	var floorMsg="Floor:"+info.floorsClimbed;
+	var stepMsg=" Step:"+info.steps;
+
 
 	dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
 	dc.clear();
@@ -76,15 +79,28 @@ class RingsView extends Ui.View {
 	 
 	 var actd=360*info.activeMinutesDay.total/actgoal;
 	 var actw=(360*info.activeMinutesWeek.total)/(actgoal*weekday);
-	 
-	 
+	var steps=360*info.steps/info.stepGoal;
+	var floors=360*info.floorsClimbed/info.floorsClimbedGoal;	 
+
+
+	    
         dc.setColor(Graphics.COLOR_YELLOW, Graphics.COLOR_BLACK);
-	drawMsg(dc,-0.8,actMsgD);
-	drawRing(dc,75,actd);
+	drawMsg(dc,-1.5,actMsgD);
+	drawRing(dc,100,actd);
 
 	dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_BLACK);
-	drawMsg(dc,0.8,actMsgW);
+	drawMsg(dc,-0.5,actMsgW);
 	drawRing(dc,90,actw);
+
+	dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_BLACK);
+	drawMsg(dc,0.5,floorMsg);
+	drawRing(dc,80,floors);
+	
+	dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_BLACK);
+	drawMsg(dc,1.5,stepMsg);
+	drawRing(dc,70,steps);
+
+	
 
 
 	
@@ -101,3 +117,4 @@ class RingsView extends Ui.View {
 
 
 }
+
