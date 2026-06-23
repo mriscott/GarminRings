@@ -76,13 +76,20 @@ class RingsView extends Ui.View {
 	 if (actgoal==0) {
 	   actgoal=info.activeMinutesWeekGoal/7;
 	 }
+	 var targetyesterday=actgoal*(weekday-1);
+	 var progress=info.activeMinutesWeek.total-targetyesterday;
+	 if(progress<0){
+	     progress=0;
+	 }
+	 System.println("wtd:"+progress);
 	 
 	 var actd=360*info.activeMinutesDay.total/actgoal;
-	 var actw=360*(info.activeMinutesWeek.total-((actgoal*weekday-1)))/(actgoal*weekday);
+	 var actw=360*progress/actgoal;
 	 if(actw<0){
 	     actw=0;
 	 }
-	var steps=360*info.steps/info.stepGoal;
+	 
+	 var steps=360*info.steps/info.stepGoal;
 	var floors=360*info.floorsClimbed/info.floorsClimbedGoal;	 
 
 
@@ -120,4 +127,5 @@ class RingsView extends Ui.View {
 
 
 }
+
 
