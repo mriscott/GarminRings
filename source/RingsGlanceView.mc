@@ -35,7 +35,7 @@ class RingsGlanceView extends Ui.GlanceView {
 	var actw=(info.activeMinutesWeek.total)/(actgoal*weekday);
 	var weektarget=(actgoal*weekday);
 	if(weekday==7){
-	    weektarget=info.activeMinutesWeek;
+	    weektarget=info.activeMinutesWeek.total;
         }
 	
 	 
