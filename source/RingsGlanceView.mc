@@ -24,19 +24,13 @@ class RingsGlanceView extends Ui.GlanceView {
 
     // Update the view
     function onUpdate(dc) {
-	var weekday=(Time.Gregorian.info(Time.today(),Time.FORMAT_SHORT).day_of_week-1);
-	if(weekday==0){
-	    weekday=7;
-	}
+	var app=Application.getApp();
+	var weekday=app.getWeekDay();
 	var info = ActivityMonitor.getInfo();
 	var actMsgW = "WTD:"+info.activeMinutesWeek.total;
-	var actgoal=info.activeMinutesWeekGoal/7;
-
-	var actw=(info.activeMinutesWeek.total)/(actgoal*weekday);
-	var weektarget=(actgoal*weekday);
-	if(weekday==7){
-	    weektarget=info.activeMinutesWeek.total;
-        }
+	var actgoal=app.getDailyGoal();
+	var weektarget=app.getTargetToday();
+	var dailyprogress=app.getAbsDailyProgress();
 	
 	 
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
@@ -45,7 +39,7 @@ class RingsGlanceView extends Ui.GlanceView {
 	dc.drawLine(0,dc.getHeight()/2,dc.getWidth(),dc.getHeight()/2);
 	dc.drawText(5, dc.getHeight()/4*3, Graphics.FONT_SMALL, ""+info.activeMinutesWeek.total+"/"+weektarget, Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
 	dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_WHITE);
-	dc.fillRectangle(0,dc.getHeight()/2-3,((dc.getWidth()*info.activeMinutesWeek.total)/weektarget),6);
+	dc.fillRectangle(0,(dc.getHeight()/2)-3,dc.getWidth()*dailyprogress/actgoal,6);
 			 
        }
 

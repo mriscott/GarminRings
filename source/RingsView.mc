@@ -10,21 +10,10 @@ using Toybox.System;
 using Toybox.Time;
 
 class RingsView extends Ui.View {
-    var stepgoal=0;
-    var floorgoal=0;
-    var actgoal=0;
-    var weekday=0;
-
+    var ringApp;
+    
     function initialize() {
         Ui.View.initialize();
-	System.println("Init");
-	var day=Application.getApp().getProperty("day");
-	System.println("Day:"+day);
-	var today = Time.today().value();
-	if(day!=today){	  
-	  Application.getApp().setProperty("day",today);
-	}
-
     }
 
 
@@ -56,41 +45,33 @@ class RingsView extends Ui.View {
     function onShow() {
     }
 
+
     // Update the view
     function onUpdate(dc) {
-	var weekday=(Time.Gregorian.info(Time.today(),Time.FORMAT_SHORT).day_of_week-1);
-	if(weekday==0){
-	    weekday=7;
-	}
-	System.println("Today:"+weekday);
+	var app=Application.getApp();
+	var weekday=app.getWeekDay();
 	var info = ActivityMonitor.getInfo();
-	var actMsgD = "  Int:"+info.activeMinutesDay.total;
-	var actMsgW = "  WTD:"+info.activeMinutesWeek.total;
-	var floorMsg="Floor:"+info.floorsClimbed;
-	var stepMsg=" Step:"+info.steps;
+	var actMsgD = "DAY:"+info.activeMinutesDay.total;
+	var actMsgW = "PROG:"+app.getDailyProgress();
+	var floorMsg="FLOORS:"+info.floorsClimbed;
+	var stepMsg=" STEPS:"+info.steps;
 
 
 	dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
 	dc.clear();
 
-	 if (actgoal==0) {
-	   actgoal=info.activeMinutesWeekGoal/7;
-	 }
-	 var targetyesterday=actgoal*(weekday-1);
-	 var progress=info.activeMinutesWeek.total-targetyesterday;
-	 if(progress<0){
-	     progress=0;
-	 }
-	 System.println("wtd:"+progress);
-	 
+	var actgoal=app.getDailyGoal();
+	var targetyesterday=app.getTargetYesterday();
+	var progress=app.getAbsDailyProgress();
+
 	 var actd=360*info.activeMinutesDay.total/actgoal;
 	 var actw=360*progress/actgoal;
 	 if(actw<0){
 	     actw=0;
 	 }
-	 
+
 	 var steps=360*info.steps/info.stepGoal;
-	var floors=360*info.floorsClimbed/info.floorsClimbedGoal;	 
+	 var floors=360*info.floorsClimbed/info.floorsClimbedGoal;	 
 
 
 	    
