@@ -25,9 +25,7 @@ class RingsGlanceView extends Ui.GlanceView {
     // Update the view
     function onUpdate(dc) {
 	var app=Application.getApp();
-	var weekday=app.getWeekDay();
 	var info = ActivityMonitor.getInfo();
-	var actMsgW = "WTD:"+info.activeMinutesWeek.total;
 	var actgoal=app.getDailyGoal();
 	var weektarget=app.getTargetToday();
 	var dailyprogress=app.getAbsDailyProgress();
@@ -48,6 +46,8 @@ class RingsGlanceView extends Ui.GlanceView {
     function onHide() {
     }
 
-
+    function initialize() {
+        Ui.GlanceView.initialize();
+    }
 
 }

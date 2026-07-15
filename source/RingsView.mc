@@ -49,7 +49,6 @@ class RingsView extends Ui.View {
     // Update the view
     function onUpdate(dc) {
 	var app=Application.getApp();
-	var weekday=app.getWeekDay();
 	var info = ActivityMonitor.getInfo();
 	var actMsgD = "DAY:"+info.activeMinutesDay.total;
 	var actMsgW = "PROG:"+app.getDailyProgress();
@@ -61,7 +60,6 @@ class RingsView extends Ui.View {
 	dc.clear();
 
 	var actgoal=app.getDailyGoal();
-	var targetyesterday=app.getTargetYesterday();
 	var progress=app.getAbsDailyProgress();
 
 	 var actd=360*info.activeMinutesDay.total/actgoal;
@@ -76,12 +74,12 @@ class RingsView extends Ui.View {
 
 	    
         dc.setColor(Graphics.COLOR_YELLOW, Graphics.COLOR_BLACK);
-	drawMsg(dc,-1.5,actMsgD);
-	drawRing(dc,100,actd);
+	drawMsg(dc,-1.5,actMsgW);
+	drawRing(dc,100,actw);
 
 	dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_BLACK);
-	drawMsg(dc,-0.5,actMsgW);
-	drawRing(dc,90,actw);
+	drawMsg(dc,-0.5,actMsgD);
+	drawRing(dc,90,actd);
 
 	dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_BLACK);
 	drawMsg(dc,0.5,floorMsg);
